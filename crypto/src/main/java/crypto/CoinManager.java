@@ -25,6 +25,13 @@ public class CoinManager {
 	
 	public static Map<String, Float> prices = new HashMap<String, Float>();
 	
+	public static Coin makeCoin(String name, float amount, float purchasePrice) throws ClientProtocolException, URISyntaxException, IOException{
+		if(!prices.keySet().contains(name)){
+			prices.put(name, (float)getPriceForCoin(name));
+		}
+		return new Coin(name, amount, prices.get(name), purchasePrice);
+	}
+	
 	public static Coin makeCoin(String name, float amount) throws ClientProtocolException, URISyntaxException, IOException{
 		if(!prices.keySet().contains(name)){
 			prices.put(name, (float)getPriceForCoin(name));
@@ -34,6 +41,9 @@ public class CoinManager {
 	
 	public static void addCoinToWallet(String coinName, float amount, Wallet wallet) throws ClientProtocolException, URISyntaxException, IOException{
 		wallet.addCoin(CoinManager.makeCoin(coinName, amount));
+	}
+	public static void addCoinToWallet(String coinName, float amount, float purchasePrice,  Wallet wallet) throws ClientProtocolException, URISyntaxException, IOException{
+		wallet.addCoin(CoinManager.makeCoin(coinName, amount, purchasePrice));
 	}
 	
 	private static float getPriceForCoin(String coinName) throws URISyntaxException, ClientProtocolException, IOException{

@@ -1,5 +1,6 @@
 package crypto;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,10 @@ public class Wallet {
 	
 	public Wallet(){
 		
+	}
+	
+	public Collection<Coin> getCoins(){
+		return wallet.values();
 	}
 	
 	public Wallet(Coin... coins){

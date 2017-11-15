@@ -25,23 +25,39 @@ public class CryptoMain {
 	
 	public static void main(String[] args) throws URISyntaxException, ClientProtocolException, IOException{	
 		Wallet myWallet = new Wallet();
-		CoinManager.addCoinToWallet("BTC", 1.1165301f, myWallet);
-		CoinManager.addCoinToWallet("ETH", 6.564297f, myWallet);
-		CoinManager.addCoinToWallet("BCH", 2.1539f, myWallet);
+		CoinManager.addCoinToWallet("BTC", 1.1165301f, 4500, myWallet);
+		CoinManager.addCoinToWallet("BTG", 1.1165301f, myWallet);
+		CoinManager.addCoinToWallet("ETH", 6.564297f, 2000, myWallet);
+		CoinManager.addCoinToWallet("BCH", 2.1539f, 1000, myWallet);
 		System.out.println(myWallet);
 		System.out.println();
 		Wallet lastWallet = getLast();
-		printProfitInfo(myWallet, 7500, lastWallet);
+		printProfitInfo(myWallet, lastWallet);
 		write(myWallet);
 		
 	}
 	
-	public static void printProfitInfo(Wallet wallet, float price, Wallet lastWallet){
+	public static void printProfitInfo(Wallet wallet, Wallet lastWallet){
+		float price = 0;
+		for(Coin coin : wallet.getCoins()){
+			price+= coin.purchasePrice;
+			System.out.print(coin.name + ": ");
+			float coinPrice = coin.purchasePrice;
+			float newPrice = coin.getValue();
+			if(coin.purchasePrice != 0){
+				System.out.print("$"+(newPrice-coinPrice) +"\t");
+				int percent = (int)(100*newPrice/coinPrice)-100;
+				System.out.println(percent+"%");
+			}else{
+				System.out.print("$" + newPrice +"\t");
+				System.out.println("FREE");
+			}
+		}
 		float newPrice = wallet.getValue();
-		System.out.println("$"+(newPrice-price));
+		System.out.print("ALL: $"+(newPrice-price) + "\t");
 		int percent = (int)(100*newPrice/price)-100;
-		System.out.println(percent+"%");
-		System.out.println(wallet.getValue() - lastWallet.getValue());
+		System.out.println(percent+"%"+"\n");
+		System.out.println("Since Last: " + (wallet.getValue() - lastWallet.getValue()));
 	}
 	
 	public static Wallet getLast() throws IOException{
