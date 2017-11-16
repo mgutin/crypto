@@ -40,7 +40,7 @@ public class Wallet {
 	public String toString(){
 		String output = "";
 		for(Coin coin : wallet.values()){
-			output+=coin.name + ": " + coin.getValue() +  "\n";
+			output+=coin.name + ": " + coin.getValue() + "\t($"+ coin.price + ")\n";
 		}
 		output+="ALL: " + getValue();
 		return output; 
